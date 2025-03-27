@@ -1,1 +1,179 @@
-# onlyfett.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes inputFocus {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #2b1055, #7597de);
+            background-size: 200% 200%;
+            animation: gradientAnimation 8s ease infinite;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            padding: 20px;
+        }
+        .login-section {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+        .image-section {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .image-section img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .login-section h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .input-group input:focus {
+            animation: inputFocus 1s infinite alternate;
+        }
+        .input-group input::placeholder {
+            color: #ddd;
+        }
+        .login-btn {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-btn:hover {
+            background: rgba(0, 0, 0, 1);
+        }
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .forgot-password a {
+            color: white;
+            text-decoration: none;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        .social-login {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .social-login a {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            margin: 0 10px;
+            padding: 10px;
+            border-radius: 50%;
+            text-align: center;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .social-login a:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            if (username && password) {
+                alert("Login Successful! Welcome, " + username);
+                window.location.href = "enterrr.html"; // Redirect to another page
+            } else {
+                prompt("Please enter a valid username and password.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="login-section">
+            <h2>ONLYFEET <br>
+                Sign In</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In <a href="enterrr.html"></a></button>
+                <div class="forgot-password">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <div class="social-login">
+                    <a href="#">G</a>
+                    <a href="#">F</a>
+                    <a href="#">T</a><br>
+                    
+                </div>
+                <h1>  _𝖍𝖊𝖛𝖆 𝖘𝖎𝖙𝖊 𝖇𝖎𝖗𝖎3𝖆𝖞𝖊𝖙 <br>1-Ⱨ₳₥Ⱬ₳  <br>2-𝖆𝖍𝖒𝖊𝖉 </h1>
+            </form>
+        </div>
+        <div class="image-section">
+            <img src="kk.jpg" alt="Login Illustration">
+        </div>
+    </div>
+</body>
+</html>
