@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
+    /* Default styles (for desktop) */
+body {
+    font-size: 18px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+    .profile-img {
+        width: 100px;
+        height: 100px;
+    }
+    .media-gallery {
+        flex-direction: column;
+    }
+}
+
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
