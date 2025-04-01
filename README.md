@@ -189,7 +189,7 @@ body {
                     <a href="#">T</a><br>
                     
                 </div>
-                <h1>  _𝖍𝖊𝖛𝖆 𝖘𝖎𝖙𝖊 𝖇𝖎𝖗𝖎3𝖆𝖞𝖊𝖙 <br>1-Ⱨ₳₥Ⱬ₳  <br>2-𝖆𝖍𝖒𝖊𝖉 </h1>
+                
             </form>
         </div>
         <div class="image-section">
