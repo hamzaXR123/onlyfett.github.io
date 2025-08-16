@@ -6,19 +6,24 @@
     <title>OnlyFeet | Premium Content Platform</title>
     <style>
         :root {
-            --primary: #8a2be2;
-            --primary-dark: #6a1b9a;
+            --primary: #00aff0;  /* OnlyFans blue */
+            --primary-dark: #0088cc;
+            --primary-light: #33ccff;
             --secondary: #ff6b6b;
+            --secondary-dark: #e64c4c;
             --accent: #ff416c;
-            --dark: #0f0c29;
-            --darker: #07051a;
+            --accent-light: #ff6b8b;
+            --dark: #121212;     /* Dark background */
+            --darker: #0a0a0a;
             --light: #f8f9fa;
             --text: #ffffff;
             --text-secondary: rgba(255, 255, 255, 0.7);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.16);
-            --shadow-lg: 0 10px 20px rgba(0,0,0,0.19);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.5);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.6);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -31,11 +36,30 @@
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: var(--text);
-            background: linear-gradient(-45deg, var(--darker), var(--dark), var(--primary-dark), var(--primary));
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: var(--dark);
             min-height: 100vh;
             overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* OnlyFans-style background pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, 
+                    rgba(0, 175, 240, 0.1) 0%, 
+                    transparent 50%),
+                radial-gradient(circle at 75% 75%, 
+                    rgba(255, 65, 108, 0.1) 0%, 
+                    transparent 50%);
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1;
         }
 
         /* Header Styles */
@@ -43,7 +67,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            background: rgba(15, 12, 41, 0.8);
+            background: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 1.5rem 5%;
@@ -53,16 +77,28 @@
             align-items: center;
             box-shadow: var(--shadow-sm);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 1rem 5%;
+            box-shadow: var(--shadow-md);
+            background: rgba(18, 18, 18, 0.98);
         }
 
         .logo h1 {
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(to right, var(--light), var(--secondary));
+            background: linear-gradient(to right, var(--light), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        header.scrolled .logo h1 {
+            font-size: 1.6rem;
         }
 
         nav ul {
@@ -88,16 +124,27 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--secondary);
+            background: var(--primary);
             transition: var(--transition);
         }
 
         nav a:hover {
-            color: var(--secondary);
+            color: var(--primary);
         }
 
         nav a:hover::after {
             width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
         }
 
         /* Main Content Styles */
@@ -106,13 +153,44 @@
             position: relative;
         }
 
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(to right, var(--light), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
         /* Hero Section */
         .hero {
             display: flex;
             align-items: center;
-            min-height: 80vh;
+            min-height: 100vh;
             position: relative;
             margin-bottom: 6rem;
+            padding-top: 80px;
         }
 
         .hero-content {
@@ -127,10 +205,11 @@
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 1.5rem;
-            background: linear-gradient(to right, var(--light), var(--secondary));
+            background: linear-gradient(to right, var(--light), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .hero-subtitle {
@@ -147,8 +226,9 @@
             transform: translateY(-50%);
             width: 50%;
             max-width: 700px;
-            filter: drop-shadow(0 20px 30px rgba(138, 43, 226, 0.3));
+            filter: drop-shadow(0 20px 30px rgba(0, 175, 240, 0.3));
             animation: float 6s ease-in-out infinite;
+            z-index: 1;
         }
 
         .hero-image img {
@@ -156,12 +236,23 @@
             height: auto;
             border-radius: 20px;
             object-fit: cover;
+            transition: var(--transition-slow);
+        }
+
+        .hero-image:hover img {
+            transform: scale(1.02);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         /* Button Styles */
         .btn {
             display: inline-block;
-            background: linear-gradient(135deg, var(--accent), #ff2d2d);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
             padding: 1rem 2.5rem;
@@ -170,7 +261,7 @@
             border-radius: 50px;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(255, 89, 89, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 175, 240, 0.3);
             text-decoration: none;
             position: relative;
             overflow: hidden;
@@ -178,8 +269,12 @@
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 89, 89, 0.4);
-            background: linear-gradient(135deg, #ff2d2d, var(--accent));
+            box-shadow: 0 8px 25px rgba(0, 175, 240, 0.4);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        .btn:active {
+            transform: translateY(1px);
         }
 
         .btn::after {
@@ -195,6 +290,18 @@
 
         .btn:hover::after {
             left: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-light);
+            color: var(--text);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 175, 240, 0.1);
+            box-shadow: 0 0 20px rgba(0, 175, 240, 0.3);
         }
 
         /* Stats Section */
@@ -216,18 +323,26 @@
             box-shadow: var(--shadow-md);
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stat-card.animated {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .stat-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-lg);
             background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
         }
 
         .stat-number {
             font-size: 3rem;
             font-weight: 700;
-            background: linear-gradient(to right, var(--light), var(--secondary));
+            background: linear-gradient(to right, var(--light), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -255,24 +370,38 @@
             box-shadow: var(--shadow-md);
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.animated {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .feature-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-lg);
             background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 175, 240, 0.3);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 175, 240, 0.4);
         }
 
         .feature-icon i {
@@ -306,7 +435,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(255, 107, 107, 0.1));
+            background: linear-gradient(135deg, rgba(0, 175, 240, 0.1), rgba(255, 107, 107, 0.1));
             border-radius: 30px;
             z-index: -1;
         }
@@ -324,10 +453,12 @@
             overflow: hidden;
             box-shadow: var(--shadow-lg);
             transition: var(--transition);
+            position: relative;
         }
 
         .creator-image:hover {
             transform: scale(1.02);
+            box-shadow: var(--shadow-xl);
         }
 
         .creator-image img {
@@ -341,20 +472,22 @@
             transform: scale(1.05);
         }
 
-        .creator-content {
-            flex: 1;
-        }
-
         .creator-badge {
             display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             padding: 0.5rem 1.5rem;
             border-radius: 50px;
             font-weight: 600;
             margin-bottom: 1rem;
             font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 175, 240, 0.3);
+            transition: var(--transition);
+        }
+
+        .creator-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 175, 240, 0.4);
         }
 
         .creator-title {
@@ -377,17 +510,6 @@
             margin: 6rem 0;
         }
 
-        .testimonials h2 {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
-            color: var(--text);
-            background: linear-gradient(to right, var(--light), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
         .testimonial-grid {
             display: flex;
             flex-wrap: wrap;
@@ -404,12 +526,26 @@
             max-width: 350px;
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .testimonial-card.animated {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .testimonial-card:hover {
             transform: translateY(-10px);
             box-shadow: var(--shadow-lg);
             background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
+        }
+
+        .testimonial-rating {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
         }
 
         .testimonial-text {
@@ -431,7 +567,13 @@
             border-radius: 50%;
             overflow: hidden;
             margin-right: 1rem;
-            border: 2px solid var(--secondary);
+            border: 2px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover .author-avatar {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 175, 240, 0.3);
         }
 
         .author-avatar img {
@@ -457,16 +599,6 @@
             text-align: center;
         }
 
-        .comparison-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--text);
-            background: linear-gradient(to right, var(--light), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
         .image-container {
             position: relative;
             width: 100%;
@@ -477,6 +609,7 @@
             border-radius: 15px;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
+            cursor: pointer;
         }
 
         .flip-box {
@@ -547,10 +680,319 @@
             animation: pulse 2s infinite;
         }
 
+        /* Pricing Section */
+        .pricing {
+            margin: 6rem 0;
+        }
+
+        .pricing-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            width: 100%;
+            max-width: 350px;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .pricing-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .pricing-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .pricing-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--light), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .pricing-period {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .pricing-features {
+            margin-bottom: 2rem;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-feature i {
+            color: var(--primary);
+            margin-right: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Creator Showcase */
+        .creator-showcase {
+            margin: 6rem 0;
+        }
+
+        .creator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .creator-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .creator-item.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .creator-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--primary);
+        }
+
+        .creator-item-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .creator-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .creator-item:hover .creator-item-image img {
+            transform: scale(1.1);
+        }
+
+        .creator-item-content {
+            padding: 1.5rem;
+        }
+
+        .creator-item-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .creator-item-category {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .creator-item-stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .creator-item-btn {
+            width: 100%;
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 4rem;
+            text-align: center;
+            margin: 6rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .newsletter h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--light), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .newsletter p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .newsletter-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* FAQ Section */
+        .faq {
+            margin: 6rem 0;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: var(--text-secondary);
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+
+        .faq-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
         /* Footer */
         footer {
             position: relative;
-            background: var(--dark);
+            background: var(--darker);
             color: white;
             padding: 5rem 5% 3rem;
             text-align: center;
@@ -564,7 +1006,7 @@
             left: 0;
             width: 100%;
             height: 50px;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%230f0c29' opacity='.25'/%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' fill='%230f0c29' opacity='.5'/%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%230f0c29'/%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%23121212' opacity='.25'/%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' fill='%23121212' opacity='.5'/%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23121212'/%3E%3C/svg%3E");
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -581,7 +1023,7 @@
         .footer-column h3 {
             font-size: 1.3rem;
             margin-bottom: 1.5rem;
-            color: var(--secondary);
+            color: var(--primary);
         }
 
         .footer-column ul {
@@ -599,8 +1041,31 @@
         }
 
         .footer-column a:hover {
-            color: var(--secondary);
+            color: var(--primary);
             padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
         }
 
         .copyright {
@@ -608,6 +1073,38 @@
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-secondary);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            box-shadow: 0 5px 20px rgba(0, 175, 240, 0.3);
+            z-index: 999;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
         }
 
         /* Animations */
@@ -636,17 +1133,45 @@
 
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+                box-shadow: 0 0 10px rgba(0, 175, 240, 0.6);
             }
             50% {
-                box-shadow: 0 0 20px rgba(255, 107, 107, 1);
+                box-shadow: 0 0 20px rgba(0, 175, 240, 1);
             }
             100% {
-                box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+                box-shadow: 0 0 10px rgba(0, 175, 240, 0.6);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
 
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+        }
+
         @media (max-width: 992px) {
             .hero {
                 flex-direction: column;
@@ -675,9 +1200,25 @@
             .creator-image {
                 max-width: 100%;
             }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                width: 100%;
+            }
         }
         
         @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .hero-title {
                 font-size: 2.5rem;
             }
@@ -698,37 +1239,39 @@
             .creator-title {
                 font-size: 2rem;
             }
-            
-            nav ul {
-                gap: 1rem;
+
+            .section-title {
+                font-size: 2rem;
             }
 
-            .testimonials h2,
-            .comparison-section h2 {
+            .newsletter {
+                padding: 3rem 1.5rem;
+            }
+
+            .newsletter h2 {
                 font-size: 2rem;
             }
         }
 
         @media (max-width: 576px) {
             header {
-                flex-direction: column;
-                gap: 1rem;
                 padding: 1rem;
-            }
-
-            nav ul {
-                gap: 0.5rem;
-                flex-wrap: wrap;
-                justify-content: center;
             }
 
             .hero-title {
                 font-size: 2rem;
             }
 
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
             .btn {
                 padding: 0.8rem 1.8rem;
                 font-size: 1rem;
+                width: 100%;
+                text-align: center;
             }
 
             .stat-card {
@@ -739,22 +1282,34 @@
             .feature-card {
                 padding: 1.5rem;
             }
+
+            .pricing-card {
+                padding: 1.5rem;
+            }
+
+            .creator-item {
+                max-width: 100%;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="logo">
             <h1>OnlyFeet</h1>
         </div>
-        <nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="mainNav">
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Creators</a></li>
-                <li><a href="#">Pricing</a></li>
-                <li><a href="#">About</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#creators">Creators</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#" class="btn">Sign In</a></li>
             </ul>
         </nav>
@@ -762,11 +1317,14 @@
 
     <main>
         <!-- Hero Section -->
-        <section class="hero">
+        <section class="hero" id="home">
             <div class="hero-content">
                 <h1 class="hero-title">Exclusive Content From Your Favorite Creators</h1>
-                <p class="hero-subtitle">Join the premium platform where creators share their most exclusive content with their biggest fans.</p>
-                <a href="buyss.html" class="btn">Get Started Today</a>
+                <p class="hero-subtitle">Join the premium platform where creators share their most exclusive content with their biggest fans. Connect directly and support the creators you love.</p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="btn">Get Started</a>
+                    <a href="#creators" class="btn btn-outline">Browse Creators</a>
+                </div>
             </div>
             <div class="hero-image">
                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Content Creator">
@@ -794,27 +1352,30 @@
         </div>
         
         <!-- Features Section -->
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
+        <section class="features" id="features">
+            <h2 class="section-title">Why Choose OnlyFeet</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Growth Tools</h3>
+                    <p class="feature-desc">Advanced analytics and promotion tools to help you grow your audience and maximize your earnings with detailed insights and performance metrics.</p>
                 </div>
-                <h3 class="feature-title">Growth Tools</h3>
-                <p class="feature-desc">Advanced analytics and promotion tools to help you grow your audience and maximize your earnings.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-money-bill-wave"></i>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="feature-title">Multiple Revenue Streams</h3>
+                    <p class="feature-desc">Earn through subscriptions, tips, pay-per-view content, exclusive merchandise, and sponsored content opportunities.</p>
                 </div>
-                <h3 class="feature-title">Multiple Revenue Streams</h3>
-                <p class="feature-desc">Earn through subscriptions, tips, pay-per-view content, and exclusive merchandise.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Content Protection</h3>
+                    <p class="feature-desc">State-of-the-art security to protect your content from piracy and unauthorized sharing with digital watermarking and DRM.</p>
                 </div>
-                <h3 class="feature-title">Content Protection</h3>
-                <p class="feature-desc">State-of-the-art security to protect your content from piracy and unauthorized sharing.</p>
             </div>
         </section>
         
@@ -827,18 +1388,87 @@
                 <div class="creator-content">
                     <span class="creator-badge">Featured Creator</span>
                     <h2 class="creator-title">Meet Alex: From Zero to $50k/month</h2>
-                    <p class="creator-desc">"This platform completely transformed my career. Within 6 months I went from struggling artist to full-time creator earning more than I ever imagined. The tools and community support made all the difference."</p>
-                    <a href="#" class="btn">View Profile</a>
+                    <p class="creator-desc">"This platform completely transformed my career. Within 6 months I went from struggling artist to full-time creator earning more than I ever imagined. The tools and community support made all the difference. Now I can focus on creating content my fans love while earning a sustainable income."</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn">View Profile</a>
+                        <a href="#" class="btn btn-outline">See Success Stories</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Creator Showcase -->
+        <section class="creator-showcase" id="creators">
+            <h2 class="section-title">Featured Creators</h2>
+            <div class="creator-grid">
+                <div class="creator-item">
+                    <div class="creator-item-image">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Creator 1">
+                    </div>
+                    <div class="creator-item-content">
+                        <h3 class="creator-item-name">Sophia R.</h3>
+                        <span class="creator-item-category">Photography</span>
+                        <div class="creator-item-stats">
+                            <span><i class="fas fa-heart"></i> 24.5K</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <a href="#" class="btn btn-outline creator-item-btn">View Profile</a>
+                    </div>
+                </div>
+                <div class="creator-item">
+                    <div class="creator-item-image">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Creator 2">
+                    </div>
+                    <div class="creator-item-content">
+                        <h3 class="creator-item-name">James L.</h3>
+                        <span class="creator-item-category">Fitness Coach</span>
+                        <div class="creator-item-stats">
+                            <span><i class="fas fa-heart"></i> 18.2K</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <a href="#" class="btn btn-outline creator-item-btn">View Profile</a>
+                    </div>
+                </div>
+                <div class="creator-item">
+                    <div class="creator-item-image">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Creator 3">
+                    </div>
+                    <div class="creator-item-content">
+                        <h3 class="creator-item-name">Emma S.</h3>
+                        <span class="creator-item-category">Digital Artist</span>
+                        <div class="creator-item-stats">
+                            <span><i class="fas fa-heart"></i> 32.7K</span>
+                            <span><i class="fas fa-star"></i> 5.0</span>
+                        </div>
+                        <a href="#" class="btn btn-outline creator-item-btn">View Profile</a>
+                    </div>
+                </div>
+                <div class="creator-item">
+                    <div class="creator-item-image">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Creator 4">
+                    </div>
+                    <div class="creator-item-content">
+                        <h3 class="creator-item-name">Michael T.</h3>
+                        <span class="creator-item-category">Musician</span>
+                        <div class="creator-item-stats">
+                            <span><i class="fas fa-heart"></i> 15.3K</span>
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                        <a href="#" class="btn btn-outline creator-item-btn">View Profile</a>
+                    </div>
                 </div>
             </div>
         </section>
         
         <!-- Testimonials -->
         <section class="testimonials">
-            <h2>What Our Community Says</h2>
+            <h2 class="section-title">What Our Community Says</h2>
             <div class="testimonial-grid">
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"I've tried many platforms but OnlyFeet provides the best tools for creators to connect with their audience and monetize their content effectively."</p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I've tried many platforms but OnlyFeet provides the best tools for creators to connect with their audience and monetize their content effectively. The analytics dashboard is incredibly detailed."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">
                             <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah J.">
@@ -850,7 +1480,10 @@
                     </div>
                 </div>
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"As a fitness coach, OnlyFeet has allowed me to share exclusive content with my most dedicated followers and build a sustainable income."</p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"As a fitness coach, OnlyFeet has allowed me to share exclusive content with my most dedicated followers and build a sustainable income. The community features are amazing."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">
                             <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mike T.">
@@ -862,7 +1495,10 @@
                     </div>
                 </div>
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"The community on OnlyFeet is incredible. I've found my most supportive fans here who truly appreciate my art and creative process."</p>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text">"The community on OnlyFeet is incredible. I've found my most supportive fans here who truly appreciate my art and creative process. The payment system is also very reliable."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">
                             <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Lisa M.">
@@ -876,10 +1512,61 @@
             </div>
         </section>
         
+        <!-- Pricing Section -->
+        <section class="pricing" id="pricing">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Starter</h3>
+                        <div class="pricing-price">$9.99</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Access to basic content</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Follow 3 creators</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Standard quality streaming</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Community access</div>
+                    </div>
+                    <a href="#" class="btn btn-outline pricing-btn">Choose Plan</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Premium</h3>
+                        <div class="pricing-price">$19.99</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Access to premium content</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Follow unlimited creators</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> HD quality streaming</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Early access to new content</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Priority customer support</div>
+                    </div>
+                    <a href="#" class="btn pricing-btn">Choose Plan</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Creator</h3>
+                        <div class="pricing-price">Free</div>
+                        <div class="pricing-period">20% platform fee</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="pricing-feature"><i class="fas fa-check"></i> All premium features</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Monetize your content</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Advanced analytics</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Multiple revenue streams</div>
+                        <div class="pricing-feature"><i class="fas fa-check"></i> Creator tools</div>
+                    </div>
+                    <a href="#" class="btn btn-outline pricing-btn">Become Creator</a>
+                </div>
+            </div>
+        </section>
+        
         <!-- Image Comparison Section -->
         <section class="comparison-section">
-            <h2>See The Transformation</h2>
-            <div class="image-container">
+            <h2 class="section-title">See The Transformation</h2>
+            <div class="image-container" onclick="toggleImage()">
                 <div class="flip-box" id="flipBox">
                     <!-- Before Image -->
                     <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Before" class="image1">
@@ -892,6 +1579,68 @@
             </div>
             <button class="btn comparison-btn" onclick="toggleImage()">See Transformation</button>
         </section>
+        
+        <!-- FAQ Section -->
+        <section class="faq" id="faq">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I become a creator on OnlyFeet?
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Becoming a creator is easy! Simply click on "Become Creator" in the pricing section, fill out the application form, and our team will review your profile. Once approved, you can start uploading content and building your subscriber base immediately.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How often do creators get paid?
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Creators receive payments on a monthly basis. Payouts are processed on the 1st of each month for the previous month's earnings. We support multiple payment methods including direct bank transfer, PayPal, and cryptocurrency.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is my payment information secure?
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely. We use industry-standard encryption and security measures to protect all payment information. OnlyFeet is PCI DSS compliant and we never store your full payment details on our servers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I cancel my subscription anytime?
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can cancel your subscription at any time through your account settings. Your subscription will remain active until the end of the current billing period, and you'll continue to have access to all premium features until then.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How does content protection work?
+                        <i class="fas fa-chevron-down faq-toggle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We employ multiple layers of protection including digital watermarking, DRM encryption, and automated monitoring for unauthorized sharing. Our system can detect and disable leaked content, and we take legal action against repeat infringers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Newsletter -->
+        <section class="newsletter">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for the latest creator spotlights, platform updates, and exclusive offers.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </section>
     </main>
 
     <footer>
@@ -899,14 +1648,21 @@
             <div class="footer-column">
                 <h3>OnlyFeet</h3>
                 <p>The premium platform for exclusive content between creators and their fans.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
             </div>
             <div class="footer-column">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Creators</a></li>
-                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#creators">Creators</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#faq">FAQ</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -916,15 +1672,17 @@
                     <li><a href="#">Community</a></li>
                     <li><a href="#">Contact Us</a></li>
                     <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
                 </ul>
             </div>
             <div class="footer-column">
-                <h3>Connect</h3>
+                <h3>For Creators</h3>
                 <ul>
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#"><i class="fab fa-tiktok"></i> TikTok</a></li>
+                    <li><a href="#">Become a Creator</a></li>
+                    <li><a href="#">Creator Resources</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Creator Dashboard</a></li>
+                    <li><a href="#">Content Guidelines</a></li>
                 </ul>
             </div>
         </div>
@@ -933,7 +1691,52 @@
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            if (mainNav.classList.contains('active')) {
+                mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
         // Toggle image comparison
         function toggleImage() {
             let flipBox = document.getElementById('flipBox');
@@ -951,35 +1754,48 @@
             }
         }
 
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
+                
+                // Close mobile menu if open
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+                
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
             });
         });
 
-        // Animate elements when they come into view
+        // Scroll Animation
         const animateOnScroll = () => {
-            const elements = document.querySelectorAll('.feature-card, .stat-card, .testimonial-card');
+            const elements = document.querySelectorAll('.feature-card, .stat-card, .testimonial-card, .pricing-card, .creator-item');
             
             elements.forEach(element => {
                 const elementPosition = element.getBoundingClientRect().top;
                 const screenPosition = window.innerHeight / 1.3;
                 
                 if (elementPosition < screenPosition) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
+                    element.classList.add('animated');
                 }
             });
         };
 
         // Set initial state for animation
-        document.querySelectorAll('.feature-card, .stat-card, .testimonial-card').forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(30px)';
+        document.querySelectorAll('.feature-card, .stat-card, .testimonial-card, .pricing-card, .creator-item').forEach(element => {
             element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         });
 
@@ -987,6 +1803,40 @@
         window.addEventListener('scroll', animateOnScroll);
         // Trigger once on page load
         window.addEventListener('load', animateOnScroll);
+        animateOnScroll(); // Run immediately in case elements are already in view
+
+        // Newsletter Form Submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = newsletterForm.querySelector('input').value;
+            // Here you would typically send the email to your server
+            alert(`Thank you for subscribing with ${email}! You'll receive our newsletter soon.`);
+            newsletterForm.reset();
+        });
+
+        // Image hover effect for creator items
+        const creatorItems = document.querySelectorAll('.creator-item');
+        creatorItems.forEach(item => {
+            const img = item.querySelector('img');
+            item.addEventListener('mousemove', (e) => {
+                const x = e.clientX - item.getBoundingClientRect().left;
+                const y = e.clientY - item.getBoundingClientRect().top;
+                
+                const centerX = item.offsetWidth / 2;
+                const centerY = item.offsetHeight / 2;
+                
+                const angleX = (y - centerY) / 20;
+                const angleY = (centerX - x) / 20;
+                
+                img.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.05)`;
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                img.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
     </script>
 </body>
 </html>
+
